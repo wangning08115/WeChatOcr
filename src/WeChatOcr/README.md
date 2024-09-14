@@ -1,0 +1,7 @@
+﻿# Application Method
+
+## Usage
+
+```cs
+
+```
