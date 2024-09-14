@@ -16,6 +16,8 @@ namespace WeChatOcr.Sample;
 
 public partial class MainWindow
 {
+    private Bitmap? _bitmap;
+
     public MainWindow()
     {
         InitializeComponent();
@@ -31,12 +33,74 @@ public partial class MainWindow
 
     private void Captured(Bitmap bitmap)
     {
+        _bitmap = bitmap;
         Img.Source = bitmap.ToImageSource();
         if (WindowState != WindowState.Normal)
             WindowState = WindowState.Normal;
         if (!IsVisible)
             Show();
         Activate();
+
+        Ocr_Click(new object(), new RoutedEventArgs());
+    }
+
+    private void Capture(object? sender, HotkeyEventArgs e)
+    {
+        Capture();
+    }
+
+    private void Capture_Click(object sender, RoutedEventArgs e)
+    {
+        Capture();
+    }
+
+    private void Clean_Click(object sender, RoutedEventArgs e)
+    {
+        Clean();
+    }
+
+    private void Clean()
+    {
+        Img.Source?.Freeze();
+        Img.Source = null;
+        GC.Collect();
+    }
+
+    private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
+    {
+        HotkeyManager.Current.AddOrReplace("Capture", Key.A, ModifierKeys.Windows | ModifierKeys.Shift, Capture);
+    }
+
+    private void MainWindow_OnUnloaded(object sender, RoutedEventArgs e)
+    {
+        HotkeyManager.Current.Remove("Capture");
+    }
+
+    protected override void OnClosing(CancelEventArgs e)
+    {
+        e.Cancel = true;
+        Hide();
+    }
+
+    private void NotifyIcon_OnLeftClick(NotifyIcon sender, RoutedEventArgs e)
+    {
+        Show();
+        Activate();
+    }
+
+    private void MenuItem_OnClick(object sender, RoutedEventArgs e)
+    {
+        Application.Current.Shutdown();
+    }
+
+    private void Ocr_Click(object sender, RoutedEventArgs e)
+    {
+        if (_bitmap == null)
+        {
+            ResultTb.Text = "Please capture the screen first.";
+            return;
+        }
+        var bitmap = (Bitmap)_bitmap.Clone();
 
         var tcs = new TaskCompletionSource<string>();
         try
@@ -89,54 +153,5 @@ public partial class MainWindow
         {
             ResultTb.Text = ex.Message;
         }
-    }
-
-    private void Capture(object? sender, HotkeyEventArgs e)
-    {
-        Capture();
-    }
-
-    private void Capture_Click(object sender, RoutedEventArgs e)
-    {
-        Capture();
-    }
-
-    private void Clean_Click(object sender, RoutedEventArgs e)
-    {
-        Clean();
-    }
-
-    private void Clean()
-    {
-        Img.Source?.Freeze();
-        Img.Source = null;
-        GC.Collect();
-    }
-
-    private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
-    {
-        HotkeyManager.Current.AddOrReplace("Capture", Key.A, ModifierKeys.Windows | ModifierKeys.Shift, Capture);
-    }
-
-    private void MainWindow_OnUnloaded(object sender, RoutedEventArgs e)
-    {
-        HotkeyManager.Current.Remove("Capture");
-    }
-
-    protected override void OnClosing(CancelEventArgs e)
-    {
-        e.Cancel = true;
-        Hide();
-    }
-
-    private void NotifyIcon_OnLeftClick(NotifyIcon sender, RoutedEventArgs e)
-    {
-        Show();
-        Activate();
-    }
-
-    private void MenuItem_OnClick(object sender, RoutedEventArgs e)
-    {
-        Application.Current.Shutdown();
     }
 }

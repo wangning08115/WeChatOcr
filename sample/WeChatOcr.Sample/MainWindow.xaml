@@ -61,6 +61,10 @@
                     Name="AuxiliaryCb"
                     Margin="2,0"
                     Content="Auxiliary" />
+                <Button
+                    Margin="2,0"
+                    Click="Ocr_Click"
+                    Content="OCR" />
                 <TextBox
                     Name="WeChatPathTb"
                     Margin="2,0"
