@@ -17,6 +17,7 @@ namespace WeChatOcr.Sample;
 public partial class MainWindow
 {
     private Bitmap? _bitmap;
+    private TaskCompletionSource<string>? _tcs;
 
     public MainWindow()
     {
@@ -102,7 +103,11 @@ public partial class MainWindow
         }
         var bitmap = (Bitmap)_bitmap.Clone();
 
-        var tcs = new TaskCompletionSource<string>();
+        if (_tcs is { Task.IsCompleted: false })
+        {
+            ResultTb.Text = "Please wait for the previous OCR operation to complete.";
+            return;
+        }
         try
         {
             var bytes = ImageUtilities.ConvertBitmap2Bytes(bitmap, ImageFormat.Png);
@@ -112,7 +117,7 @@ public partial class MainWindow
                 if (result == null) return;
                 var list = result?.OcrResult?.SingleResult;
                 if (list == null)
-                    tcs.SetResult("WeChatOCR get result is null");
+                    _tcs.SetResult("WeChatOCR get result is null");
 
 
                 var sb = new StringBuilder();
@@ -134,18 +139,18 @@ public partial class MainWindow
                     // ignore
                 }
 
-                tcs.SetResult(sb.ToString());
+                _tcs.SetResult(sb.ToString());
             });
 
             var timeoutTask = Task.Delay(10000);
-            var completedTask = Task.WhenAny(tcs.Task, timeoutTask);
+            var completedTask = Task.WhenAny(_tcs.Task, timeoutTask);
 
             if (completedTask == timeoutTask)
             {
                 throw new TimeoutException("WeChatOCR operation timed out.");
             }
             // 提取content的值
-            var finalResult = tcs.Task;
+            var finalResult = _tcs.Task;
 
             ResultTb.Text = finalResult.Result;
         }
