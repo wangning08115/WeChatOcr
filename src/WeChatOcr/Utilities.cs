@@ -9,8 +9,9 @@ public partial class Utilities
     ///     微信默认安装目录
     /// </summary>
     private const string WeChatDefaultPath = @"C:\Program Files\Tencent\WeChat";
-    private const string MmmojoDll = "mmmojo.dll";
-    private const string Mmmojo64Dll = "mmmojo_64.dll";
+
+    private const string MmMojoDll = "mmmojo.dll";
+    private const string MmMojo64Dll = "mmmojo_64.dll";
 
     /// <summary>
     ///     获取微信安装目录
@@ -67,17 +68,47 @@ public partial class Utilities
     /// <summary>
     ///     复制微信安装目录下的mmmojo.dll、mmmojo_64.dll到软件目录
     /// </summary>
-    /// <param name="wechatDir"></param>
-    /// <param name="targetPath">目标目录</param>
-    public static void CopyMmmojoDll(string wechatDir, string targetPath)
+    /// <param name="wechatFullDir">
+    ///     微信完整路径包含版本号
+    ///     * C:\Program Files\Tencent\WeChat\[3.9.12.11]
+    /// </param>
+    public static void CopyMmmojoDll(string wechatFullDir)
     {
-        var mmmojoFullPath = Path.Combine(wechatDir, MmmojoDll);
-        var mmmojo64FullPath = Path.Combine(wechatDir, Mmmojo64Dll);
-        var targetMmmojoFullPath = Path.Combine(targetPath, MmmojoDll);
-        var targetMmmojo64FullPath = Path.Combine(targetPath, Mmmojo64Dll);
-        if (!File.Exists(targetMmmojoFullPath))
-            File.Copy(mmmojoFullPath, targetMmmojoFullPath);
-        if (!File.Exists(targetMmmojo64FullPath))
-            File.Copy(mmmojo64FullPath, targetMmmojo64FullPath);
+        var targetPath = AppDomain.CurrentDomain.BaseDirectory;
+        var mmMojoFullPath = Path.Combine(wechatFullDir, MmMojoDll);
+        var mmMojo64FullPath = Path.Combine(wechatFullDir, MmMojo64Dll);
+        var targetMmMojoFullPath = Path.Combine(targetPath, MmMojoDll);
+        var targetMmMojo64FullPath = Path.Combine(targetPath, MmMojo64Dll);
+        if (!File.Exists(targetMmMojoFullPath))
+            File.Copy(mmMojoFullPath, targetMmMojoFullPath);
+        if (!File.Exists(targetMmMojo64FullPath))
+            File.Copy(mmMojo64FullPath, targetMmMojo64FullPath);
+    }
+
+    /// <summary>
+    ///     移除软件目录下的mmmojo.dll、mmmojo_64.dll
+    /// </summary>
+    /// <param name="error"></param>
+    public static bool RemoveMmmojoDll(out string error)
+    {
+        var ret = true;
+        error = string.Empty;
+        var targetPath = AppDomain.CurrentDomain.BaseDirectory;
+        var targetMmMojoFullPath = Path.Combine(targetPath, MmMojoDll);
+        var targetMmMojo64FullPath = Path.Combine(targetPath, MmMojo64Dll);
+        try
+        {
+            if (File.Exists(targetMmMojoFullPath))
+                File.Delete(targetMmMojoFullPath);
+            if (File.Exists(targetMmMojo64FullPath))
+                File.Delete(targetMmMojo64FullPath);
+        }
+        catch (Exception ex)
+        {
+            error = ex.Message;
+            ret = false;
+        }
+
+        return ret;
     }
 }

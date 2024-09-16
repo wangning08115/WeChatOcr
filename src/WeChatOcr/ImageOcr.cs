@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace WeChatOcr;
 
@@ -14,7 +15,7 @@ public class ImageOcr : IDisposable
         var wechatDir = Utilities.GetWeChatDir(path) ??
                         throw new Exception($"get wechat path failed: {path ?? "NULL"}");
 
-        Utilities.CopyMmmojoDll(wechatDir, AppDomain.CurrentDomain.BaseDirectory);
+        Utilities.CopyMmmojoDll(wechatDir);
 
         var ocrPtr = GCHandle.ToIntPtr(GCHandle.Alloc(_ocrManager));
         _ocrManager = (GCHandle.FromIntPtr(ocrPtr).Target as OcrManager)!;
@@ -45,7 +46,7 @@ public class ImageOcr : IDisposable
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Debug.WriteLine(ex.Message);
                 return;
             }
     }

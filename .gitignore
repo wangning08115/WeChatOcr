@@ -12,3 +12,4 @@ packages/
 .DS_Store
 
 publish/
+artifacts/

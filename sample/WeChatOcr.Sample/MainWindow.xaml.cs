@@ -8,7 +8,6 @@ using System.Windows;
 using System.Windows.Input;
 using ScreenGrab.Extensions;
 using Wpf.Ui.Tray.Controls;
-using System.Windows.Media.Imaging;
 using System.Text;
 
 namespace WeChatOcr.Sample;
@@ -108,6 +107,7 @@ public partial class MainWindow
             ResultTb.Text = "Please wait for the previous OCR operation to complete.";
             return;
         }
+        _tcs = new TaskCompletionSource<string>();
         try
         {
             var bytes = ImageUtilities.ConvertBitmap2Bytes(bitmap, ImageFormat.Png);
