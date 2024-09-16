@@ -2,6 +2,4 @@
 
 ## Usage
 
-```cs
-
-```
+see WeChatOcr.Sample
