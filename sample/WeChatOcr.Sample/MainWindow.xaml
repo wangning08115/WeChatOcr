@@ -68,7 +68,7 @@
                 <TextBox
                     Name="WeChatPathTb"
                     Margin="2,0"
-                    Text="C:\Program Files\Tencent\WeChat" />
+                    Text="D:\Apps\WeChat\[3.9.12.11]" />
             </StackPanel>
         </ui:Card>
         <Grid Grid.Row="2" Margin="8">

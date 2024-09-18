@@ -114,32 +114,43 @@ public partial class MainWindow
             using var ocr = new ImageOcr(WeChatPathTb.Text.Trim());
             ocr.Run(bytes, (path, result) =>
             {
-                if (result == null) return;
-                var list = result?.OcrResult?.SingleResult;
-                if (list == null)
-                    _tcs.SetResult("WeChatOCR get result is null");
-
-
-                var sb = new StringBuilder();
-                for (var i = 0; i < list?.Count; i++)
-                {
-                    if (list[i] is not { } item || string.IsNullOrEmpty(item.SingleStrUtf8))
-                        continue;
-
-                    sb.AppendLine(item.SingleStrUtf8);
-                }
-
                 try
                 {
-                    if (System.IO.File.Exists(path))
-                        System.IO.File.Delete(path);
-                }
-                catch
-                {
-                    // ignore
-                }
+                    if (result == null) return;
+                    var list = result?.OcrResult?.SingleResult;
+                    if (list == null)
+                    {
+                        //避免重复set
+                        _tcs.SetResult("WeChatOCR get result is null");
+                        return;
+                    }
 
-                _tcs.SetResult(sb.ToString());
+
+                    var sb = new StringBuilder();
+                    for (var i = 0; i < list?.Count; i++)
+                    {
+                        if (list[i] is not { } item || string.IsNullOrEmpty(item.SingleStrUtf8))
+                            continue;
+
+                        sb.AppendLine(item.SingleStrUtf8);
+                    }
+
+                    try
+                    {
+                        if (System.IO.File.Exists(path))
+                            System.IO.File.Delete(path);
+                    }
+                    catch
+                    {
+                        // ignore
+                    }
+
+                    _tcs.SetResult(sb.ToString());
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine(ex.Message);
+                }
             });
 
             var timeoutTask = Task.Delay(10000);
