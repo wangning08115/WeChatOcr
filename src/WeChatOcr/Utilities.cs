@@ -26,8 +26,8 @@ public partial class Utilities
     {
         path ??= WeChatDefaultPath;
 
-        // 判断是否为带有版本号的完整目录
-        if (WeChatVersionRegex().IsMatch(path))
+        // 根据给定路径下 mmmojo.dll 的存在与否，判断是否为微信完整路径
+        if (File.Exists(Path.Combine(path, MmMojoDll)))
             return path.TrimEnd('\\');
 
         // 从注册表中获取微信安装版本并根据参数path拼接微信安装目录
@@ -51,13 +51,6 @@ public partial class Utilities
         if (ocrExePath != null && File.Exists(ocrExePath)) return ocrExePath;
         return default;
     }
-
-    /// <summary>
-    ///     微信路径版本号正则表达式
-    /// </summary>
-    /// <returns></returns>
-    [GeneratedRegex(@"\[\d+(\.\d+)*\]$")]
-    private static partial Regex WeChatVersionRegex();
 
     public static void WriteBytesToFile(string filePath, byte[] bytes)
     {
