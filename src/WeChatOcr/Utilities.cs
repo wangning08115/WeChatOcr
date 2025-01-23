@@ -1,5 +1,4 @@
-﻿using System.Text.RegularExpressions;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 
 namespace WeChatOcr;
 
@@ -67,7 +66,8 @@ public partial class Utilities
     /// </param>
     public static void CopyMmmojoDll(string wechatFullDir)
     {
-        var targetPath = AppDomain.CurrentDomain.BaseDirectory;
+        var targetPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Constant.WeChatOcrData);
+        if (!Directory.Exists(targetPath)) Directory.CreateDirectory(targetPath);
         var mmMojoFullPath = Path.Combine(wechatFullDir, MmMojoDll);
         var mmMojo64FullPath = Path.Combine(wechatFullDir, MmMojo64Dll);
         var targetMmMojoFullPath = Path.Combine(targetPath, MmMojoDll);

@@ -5,12 +5,59 @@
     </PropertyGroup>
     
     <PropertyGroup Label="Nuget">
-        <Version>1.0.1</Version>
+        <Version>1.0.2</Version>
         <Title>WeChatOcr</Title>
         <Description>WeChatOcr, Study only, do not use for commercial purposes</Description>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageTags>WeChatOcr</PackageTags>
     </PropertyGroup>
+    
+    <ItemGroup>
+      <None Remove="WeChatOcrData\mmmojo.dll" />
+      <None Remove="WeChatOcrData\mmmojo_64.dll" />
+      <None Remove="WeChatOcrData\Model\FPOCRRecog.xnet" />
+      <None Remove="WeChatOcrData\Model\OCRDetFP32.xnet.nas" />
+      <None Remove="WeChatOcrData\Model\OCRParaDetV1.1.0.26.xnet" />
+      <None Remove="WeChatOcrData\Model\OCRRecogFP32V1.1.0.26.xnet" />
+      <None Remove="WeChatOcrData\Model\RecDict" />
+      <None Remove="WeChatOcrData\Model\sohu_simp.txt" />
+      <None Remove="WeChatOcrData\WeChat.exe" />
+      <None Remove="WeChatOcrData\WeChatOCR.exe" />
+      <None Remove="WeChatOcrData\x64.config" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <Content Include="WeChatOcrData\mmmojo.dll">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="WeChatOcrData\mmmojo_64.dll">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="WeChatOcrData\Model\FPOCRRecog.xnet">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="WeChatOcrData\Model\OCRDetFP32.xnet.nas">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="WeChatOcrData\Model\OCRParaDetV1.1.0.26.xnet">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="WeChatOcrData\Model\OCRRecogFP32V1.1.0.26.xnet">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="WeChatOcrData\Model\RecDict">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="WeChatOcrData\Model\sohu_simp.txt">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="WeChatOcrData\WeChatOCR.exe">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="WeChatOcrData\x64.config">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
 
     <ItemGroup Label="Nuget">
         <None Include="README.md" Pack="true" PackagePath="\" />

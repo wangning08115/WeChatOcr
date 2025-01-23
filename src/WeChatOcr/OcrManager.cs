@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.IO;
 using System.Runtime.InteropServices;
 using Google.Protobuf;
 using OcrProtobuf;
@@ -19,8 +20,24 @@ public class OcrManager : XPluginManager, IDisposable
     private readonly Stopwatch[] timers = new Stopwatch[OcrMaxTaskId];
     private volatile bool isConnected;
 
-    public OcrManager()
+    public OcrManager(string? path = default)
     {
+        if (string.IsNullOrEmpty(path))
+        {
+            SetExePath();
+            SetUsrLibDir();
+        }
+        else
+        {
+            var ocrExePath = Utilities.GetWeChatOcrExePath() ?? throw new Exception("get wechat ocr exe path is null");
+            var wechatDir = Utilities.GetWeChatDir(path) ??
+                            throw new Exception($"get wechat path failed: {path ?? "NULL"}");
+
+            Utilities.CopyMmmojoDll(wechatDir);
+            SetExePath(ocrExePath);
+            SetUsrLibDir(wechatDir);
+        }
+
         for (var i = 0; i < OcrMaxTaskId; i++)
         {
             queueIds.Enqueue(i);
@@ -28,7 +45,7 @@ public class OcrManager : XPluginManager, IDisposable
         }
     }
 
-    public void SetUsrLibDir(string usrLibDir)
+    public void SetUsrLibDir(string usrLibDir = Constant.WeChatOcrData)
     {
         AppendSwitchNativeCmdLine("user-lib-dir", usrLibDir);
     }

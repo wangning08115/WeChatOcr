@@ -10,17 +10,13 @@ public class ImageOcr : IDisposable
 
     public ImageOcr(string? path = default)
     {
-        _ocrManager = new OcrManager();
-        var ocrExePath = Utilities.GetWeChatOcrExePath() ?? throw new Exception("get wechat ocr exe path is null");
-        var wechatDir = Utilities.GetWeChatDir(path) ??
-                        throw new Exception($"get wechat path failed: {path ?? "NULL"}");
-
-        Utilities.CopyMmmojoDll(wechatDir);
+        if (string.IsNullOrEmpty(path))
+            _ocrManager = new OcrManager();
+        else
+            _ocrManager = new OcrManager(path);
 
         var ocrPtr = GCHandle.ToIntPtr(GCHandle.Alloc(_ocrManager));
         _ocrManager = (GCHandle.FromIntPtr(ocrPtr).Target as OcrManager)!;
-        _ocrManager.SetExePath(ocrExePath);
-        _ocrManager.SetUsrLibDir(wechatDir);
         _ocrManager.StartWeChatOcr(ocrPtr);
     }
 

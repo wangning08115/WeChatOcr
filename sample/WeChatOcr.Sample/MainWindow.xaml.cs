@@ -93,8 +93,10 @@ public partial class MainWindow
         Application.Current.Shutdown();
     }
 
-    private void Ocr_Click(object sender, RoutedEventArgs e)
+    private async void Ocr_Click(object sender, RoutedEventArgs e)
     {
+        ResultTb.Text = "";
+
         if (_bitmap == null)
         {
             ResultTb.Text = "Please capture the screen first.";
@@ -153,11 +155,12 @@ public partial class MainWindow
                 }
             });
 
-            var timeoutTask = Task.Delay(10000);
-            var completedTask = Task.WhenAny(_tcs.Task, timeoutTask);
+            var timeoutTask = Task.Delay(3000);
+            var completedTask = await Task.WhenAny(_tcs.Task, timeoutTask);
 
             if (completedTask == timeoutTask)
             {
+                _tcs.SetCanceled();
                 throw new TimeoutException("WeChatOCR operation timed out.");
             }
             // 提取content的值
