@@ -5,7 +5,7 @@ public class Constant
     /// <summary>
     ///     内部OCR数据目录
     /// </summary>
-    public const string WeChatOcrData = ".\\WeChatOcrData";
+    public const string WeChatOcrData = ".\\wco_data";
 
 #if WIN32
     public const string MojoDllName = $"{Constant.WeChatOcrData}\\mmmojo.dll";
