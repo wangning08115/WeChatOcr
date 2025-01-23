@@ -18,12 +18,11 @@ Install-Package WeChatOcr
 - Example Code
 
 ```cs
-var weChatPath = @"D:\Apps\WeChat\[3.9.12.11]";	//Your WeChat installation directory
 //1. image file
 var imgPath = @"C:\Users\admin\Desktop\test.png";	//Your image file path
 //2. image bytes
 var imgBytes = new Byte[] {};	//Your image binary data
-using var ocr = new ImageOcr(weChatPath);
+using var ocr = new ImageOcr();	//You can use the built-in WeChat on your computer for OCR.
 ocr.Run(imgPath,	//imgPath or imgBytes
 (path, result) =>
 {
@@ -65,3 +64,4 @@ Study only, do not use for commercial purposes
 
 - [https://github.com/EEEEhex/QQImpl/](https://github.com/EEEEhex/QQImpl/)
 - [https://github.com/lanni1981/WeChatOCR_CSharp](https://github.com/lanni1981/WeChatOCR_CSharp)
+- [https://aardio.online/thread-449.htm](https://aardio.online/thread-449.htm)
