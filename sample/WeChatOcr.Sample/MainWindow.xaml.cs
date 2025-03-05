@@ -25,6 +25,12 @@ public partial class MainWindow
 
     private void Capture()
     {
+        if (HideWinTs.IsChecked == true)
+        {
+            Hide();
+            Thread.Sleep(200);
+        }
+
         Clean();
 
         ScreenGrabber.OnCaptured = Captured;

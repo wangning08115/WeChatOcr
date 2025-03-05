@@ -53,6 +53,7 @@
                     Margin="2,0"
                     Click="Capture_Click"
                     Content="Capture(Win+Shift+A)" />
+                <ui:ToggleSwitch Name="HideWinTs" Content="HideWindow" />
                 <Button
                     Margin="2,0"
                     Click="Clean_Click"
