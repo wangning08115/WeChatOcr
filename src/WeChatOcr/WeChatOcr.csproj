@@ -5,7 +5,7 @@
     </PropertyGroup>
     
     <PropertyGroup Label="Nuget">
-        <Version>1.0.2</Version>
+        <Version>1.0.3</Version>
         <Title>WeChatOcr</Title>
         <Description>WeChatOcr, Study only, do not use for commercial purposes</Description>
         <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -13,12 +13,9 @@
     </PropertyGroup>
     
     <ItemGroup>
-      <None Remove="wco_data\**" />
-    </ItemGroup>
-    
-    <ItemGroup>
       <Content Include="wco_data\**">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		<PackageCopyToOutput>true</PackageCopyToOutput>
       </Content>
     </ItemGroup>
 
