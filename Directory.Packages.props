@@ -4,7 +4,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="Google.Protobuf" Version="3.29.3" />
-    <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageVersion Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageVersion Include="NHotkey" Version="3.0.0" />
     <PackageVersion Include="NHotkey.Wpf" Version="3.0.0" />
     <PackageVersion Include="ScreenGrab" Version="1.0.6" />
