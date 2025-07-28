@@ -9,6 +9,7 @@ using System.Windows.Input;
 using ScreenGrab.Extensions;
 using Wpf.Ui.Tray.Controls;
 using System.Text;
+using System.Diagnostics;
 
 namespace WeChatOcr.Sample;
 
@@ -74,12 +75,12 @@ public partial class MainWindow
 
     private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
     {
-        HotkeyManager.Current.AddOrReplace("Capture", Key.A, ModifierKeys.Windows | ModifierKeys.Shift, Capture);
+        //HotkeyManager.Current.AddOrReplace("Capture", Key.A, ModifierKeys.Windows | ModifierKeys.Shift, Capture);
     }
 
     private void MainWindow_OnUnloaded(object sender, RoutedEventArgs e)
     {
-        HotkeyManager.Current.Remove("Capture");
+        //HotkeyManager.Current.Remove("Capture");
     }
 
     protected override void OnClosing(CancelEventArgs e)
@@ -108,13 +109,29 @@ public partial class MainWindow
             ResultTb.Text = "Please capture the screen first.";
             return;
         }
-        var bitmap = (Bitmap)_bitmap.Clone();
+       // var bitmap = (Bitmap)_bitmap.Clone();
 
         if (_tcs is { Task.IsCompleted: false })
         {
             ResultTb.Text = "Please wait for the previous OCR operation to complete.";
             return;
         }
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.Start();
+        for (int i = 0; i < 1; i++)
+        {
+            var bitmap = (Bitmap)_bitmap.Clone();
+            await NewMethod(bitmap);
+            Debug.WriteLine(stopwatch.ElapsedMilliseconds);
+        }
+        stopwatch.Stop();
+        Debug.WriteLine(stopwatch.ElapsedMilliseconds / 1 / 1000d);
+
+
+    }
+
+    private async Task NewMethod(Bitmap bitmap)
+    {
         _tcs = new TaskCompletionSource<string>();
         try
         {
